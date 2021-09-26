@@ -1,5 +1,5 @@
 from PIL import Image, ImageSequence
-import os, time
+import os, sys
 
 
 ASCII_CHARS = ["@", "#", "S", "%", "?", "*", "+", ";", ":", ",", "."]
@@ -28,40 +28,30 @@ def convertAscii(image):
     return(characters)   
 
 
-def animation():
-    for file in os.listdir("Frames"):
-        with open(f"Frames/{file}", "r") as f:
-            txt_frames.append(f.readlines())
-    for i in range(5):
-        for frame in txt_frames:
-            print("".join(frame))
-            time.sleep(0.024)
-            os.system("cls")
-    return print("Animation Finished!")
+# def animation(aframe, loop):
+
+#     return print("Animation Finished!")
 
 
-def delete():
-    for filename in os.listdir("Frames"):
-        file_path = os.path.join("Frames", filename)
-        os.unlink(file_path)
+# def delete():
+#     for filename in os.listdir("Frames"):
+#         file_path = os.path.join("Frames", filename)
+#         os.unlink(file_path)
 
 
 def main(new_w=120):
-    delete()
     with Image.open("cube2.gif") as img:
         for frame in ImageSequence.Iterator(img):
             frames.append(greyScale(resize(frame)))
 
-        for i in range(0, len(frames)):
-            new_frame = convertAscii(greyScale(resize(frames[i])))
-            pixel_count = len(new_frame)  
-            aframe = "\n".join([new_frame[index:(index+new_w)] for index in range(0, pixel_count, new_w)])
-            with open(f"Frames/frame{i}.txt", "w") as f:
-                f.write(aframe)
-            # im.save(f"Frames/Image{i}.png")
-        
-        animation()
-
+        for j in range(5):
+            for i in range(0, len(frames)):
+                new_frame = convertAscii(greyScale(resize(frames[i])))
+                pixel_count = len(new_frame)  
+                aframe = "\n".join([new_frame[index:(index+new_w)] for index in range(0, pixel_count, new_w)])
+                sys.stdout.write(aframe)
+                os.system("cls")
+                # im.save(f"Frames/Image{i}.png")
     return
 
 if __name__ == '__main__':
